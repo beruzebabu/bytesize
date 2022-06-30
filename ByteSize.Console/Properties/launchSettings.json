@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "ByteSize.Console": {
+      "commandName": "Project"
+    },
+    "ByteSize.Console Root": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\"
+    }
+  }
+}
