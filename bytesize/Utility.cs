@@ -2,11 +2,6 @@
 {
     public static class Utility
     {
-        public static void HelloWorld()
-        {
-            Console.WriteLine("Hello world!");
-        }
-
         public static List<Directory> ScanDirectories(string[] paths)
         {
             List<Directory> result = new List<Directory>();
