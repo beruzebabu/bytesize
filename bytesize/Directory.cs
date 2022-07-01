@@ -26,17 +26,17 @@ namespace ByteSize
         {
             try
             {
-                foreach (string subdirPath in System.IO.Directory.EnumerateDirectories(this.Path))
+                DirectoryInfo di = new System.IO.DirectoryInfo(this.Path);
+                foreach (DirectoryInfo subdir in di.EnumerateDirectories())
                 {
-                    Directory subDirectory = new Directory(subdirPath);
+                    Directory subDirectory = new Directory(subdir.FullName);
                     subDirectory.ScanSync();
                     this.SubDirectories.Add(subDirectory);
                 }
 
-                foreach (string filePath in System.IO.Directory.GetFiles(this.Path))
+                foreach (FileInfo fi in di.GetFiles())
                 {
-                    FileInfo fi = new FileInfo(filePath);
-                    File file = new File(filePath, fi.Length);
+                    File file = new File(fi.FullName, fi.Length);
                     this.DirectoryFiles.Add(file);
                 }
 
@@ -54,24 +54,27 @@ namespace ByteSize
         {
             try
             {
-                Task t = Task.Run(async () =>
-                {
-                    foreach (string subdirPath in System.IO.Directory.EnumerateDirectories(this.Path))
-                    {
-                        Directory subDirectory = new Directory(subdirPath);
-                        await subDirectory.ScanAsync();
-                        SubDirectories.Add(subDirectory);
-                    }
-                });
+                List<Task> quequedTasks = new List<Task>();
 
-                foreach (string filePath in System.IO.Directory.GetFiles(this.Path))
+                DirectoryInfo di = new System.IO.DirectoryInfo(this.Path);
+                foreach (DirectoryInfo subdir in di.EnumerateDirectories())
                 {
-                    FileInfo fi = new FileInfo(filePath);
-                    File file = new File(filePath, fi.Length);
-                    this.DirectoryFiles.Add(file);
+                    Directory subDirectory = new Directory(subdir.FullName);
+                    Task t = Task.Run(async () =>
+                    {
+                        await subDirectory.ScanAsync();
+                    });
+                    quequedTasks.Add(t);
+                    SubDirectories.Add(subDirectory);
                 }
 
-                await t;
+                await Task.WhenAll(quequedTasks);
+
+                foreach (FileInfo fi in di.GetFiles())
+                {
+                    File file = new File(fi.FullName, fi.Length);
+                    this.DirectoryFiles.Add(file);
+                }
 
                 this.Size = this.DirectoryFiles.Sum(f => f.Size) + this.SubDirectories.Sum(d => d.Size);
                 this.Scanned = true;
