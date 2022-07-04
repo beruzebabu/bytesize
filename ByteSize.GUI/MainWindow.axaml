@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="700"
+        x:Class="ByteSize.GUI.MainWindow"
+        Title="ByteSize">
+	<Grid ColumnDefinitions="*" RowDefinitions="36,*,40,12" Margin="4" VerticalAlignment="Stretch">
+		<TextBox Grid.Row="0" Name="path" FontSize="18">C:\Coding</TextBox>
+		<TreeDataGrid Grid.Row="1" Name="treeDataGridView">
+		</TreeDataGrid>
+		<Grid Grid.Row="2" VerticalAlignment="Bottom" ColumnDefinitions="*,*" RowDefinitions="Auto"  Margin="4">
+			<TextBlock Grid.Column="0" Name="console" VerticalAlignment="Center"></TextBlock>
+			<Button Grid.Column="1" Name="button" Click="button_Click" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Scan</Button>
+		</Grid>
+		<ProgressBar Grid.Row="3" Name="progressbar" Height="10" VerticalAlignment="Bottom"></ProgressBar>
+	</Grid>
+</Window>
