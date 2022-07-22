@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace ByteSize
 {
-    public class File
+    public class File : IItem
     {
         public string Name { get; }
         public long Size { get; }
+        public List<IItem> SubItems { get; }
 
         public File(string name, long size)
         {
             this.Name = name;
             this.Size = size;
+            this.SubItems = new List<IItem>();
         }
     }
 }

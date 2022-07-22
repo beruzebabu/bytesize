@@ -12,8 +12,8 @@ namespace ByteSize.GUI
     public partial class MainWindow : Window
     {
         private ISizeCalculation sizeCalculation = new GigabyteSizeCalculation();
-        private ObservableCollection<Directory> directoryList = new ObservableCollection<Directory>();
-        public HierarchicalTreeDataGridSource<Directory> HierarchicalTreeDataGridSource { get; set; }
+        private ObservableCollection<IItem> directoryList = new ObservableCollection<IItem>();
+        public HierarchicalTreeDataGridSource<IItem> HierarchicalTreeDataGridSource { get; set; }
 
         public MainWindow()
         {
@@ -21,15 +21,15 @@ namespace ByteSize.GUI
             InitializeComponent();
             this.UpdateProgressBar += MainWindow_UpdateProgressBar;
 
-            HierarchicalTreeDataGridSource = new HierarchicalTreeDataGridSource<Directory>(directoryList)
+            HierarchicalTreeDataGridSource = new HierarchicalTreeDataGridSource<IItem>(directoryList)
             {
                 Columns =
 {
-                    new HierarchicalExpanderColumn<Directory>(
-                        new TextColumn<Directory, string>("Path", d => d.Path),
-                    d => d.SubDirectories),
-                    new TextColumn<Directory, double>("Size", d => sizeCalculation.Calculate(d.Size)),
-                    new TextColumn<Directory, string>("", d => sizeCalculation.Suffix),
+                    new HierarchicalExpanderColumn<IItem>(
+                        new TextColumn<IItem, string>("Path", d => d.Name),
+                    d => d.SubItems),
+                    new TextColumn<IItem, double>("Size", d => sizeCalculation.Calculate(d.Size)),
+                    new TextColumn<IItem, string>("", d => sizeCalculation.Suffix),
                 }
             };
 
@@ -60,7 +60,6 @@ namespace ByteSize.GUI
                     while(!t.IsCompleted)
                     {
                         await Task.Delay(100);
-                        //await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(UpdateProgressBar);
                     }
                     await t;
                 });

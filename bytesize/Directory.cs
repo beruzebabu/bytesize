@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace ByteSize
 {
-    public class Directory
+    public class Directory : IItem
     {
+        public string Name { get; }
         public string Path { get; }
         public long Size { get; set; }
-        public List<Directory> SubDirectories { get; }
-        public List<File> DirectoryFiles { get; }
+        public List<IItem> SubItems { get; }
         public bool Scanned { get; set; }
 
         public Directory(string path)
         {
+            this.Name = path;
             this.Path = path;
-            this.SubDirectories = new List<Directory>();
-            this.DirectoryFiles = new List<File>();
+            this.SubItems = new List<IItem>();
         }
 
         public void ScanSync()
@@ -31,16 +31,16 @@ namespace ByteSize
                 {
                     Directory subDirectory = new Directory(subdir.FullName);
                     subDirectory.ScanSync();
-                    this.SubDirectories.Add(subDirectory);
+                    this.SubItems.Add(subDirectory);
                 }
 
                 foreach (FileInfo fi in di.GetFiles())
                 {
                     File file = new File(fi.Name, fi.Length);
-                    this.DirectoryFiles.Add(file);
+                    this.SubItems.Add(file);
                 }
 
-                this.Size = this.DirectoryFiles.Sum(f => f.Size) + this.SubDirectories.Sum(d => d.Size);
+                this.Size = this.SubItems.Sum(i => i.Size);
                 this.Scanned = true;
             }
             catch (Exception e)
@@ -65,7 +65,7 @@ namespace ByteSize
                         await subDirectory.ScanAsync();
                     });
                     quequedTasks.Add(t);
-                    SubDirectories.Add(subDirectory);
+                    this.SubItems.Add(subDirectory);
                 }
 
                 await Task.WhenAll(quequedTasks);
@@ -73,10 +73,10 @@ namespace ByteSize
                 foreach (FileInfo fi in di.GetFiles())
                 {
                     File file = new File(fi.Name, fi.Length);
-                    this.DirectoryFiles.Add(file);
+                    this.SubItems.Add(file);
                 }
 
-                this.Size = this.DirectoryFiles.Sum(f => f.Size) + this.SubDirectories.Sum(d => d.Size);
+                this.Size = this.SubItems.Sum(i => i.Size);
                 this.Scanned = true;
             }
             catch (Exception e)
