@@ -36,7 +36,7 @@ namespace ByteSize
 
                 foreach (FileInfo fi in di.GetFiles())
                 {
-                    File file = new File(fi.FullName, fi.Length);
+                    File file = new File(fi.Name, fi.Length);
                     this.DirectoryFiles.Add(file);
                 }
 
@@ -72,7 +72,7 @@ namespace ByteSize
 
                 foreach (FileInfo fi in di.GetFiles())
                 {
-                    File file = new File(fi.FullName, fi.Length);
+                    File file = new File(fi.Name, fi.Length);
                     this.DirectoryFiles.Add(file);
                 }
 
