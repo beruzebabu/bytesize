@@ -11,6 +11,7 @@ namespace ByteSize.GUI
 {
     public partial class MainWindow : Window
     {
+        private ISizeCalculation sizeCalculation = new GigabyteSizeCalculation();
         private ObservableCollection<Directory> directoryList = new ObservableCollection<Directory>();
         public HierarchicalTreeDataGridSource<Directory> HierarchicalTreeDataGridSource { get; set; }
 
@@ -27,8 +28,8 @@ namespace ByteSize.GUI
                     new HierarchicalExpanderColumn<Directory>(
                         new TextColumn<Directory, string>("Path", d => d.Path),
                     d => d.SubDirectories),
-                    new TextColumn<Directory, double>("Size", d => d.Size / Math.Pow(1024, 2)),
-                    new TextColumn<Directory, string>("", d => "MB"),
+                    new TextColumn<Directory, double>("Size", d => sizeCalculation.Calculate(d.Size)),
+                    new TextColumn<Directory, string>("", d => sizeCalculation.Suffix),
                 }
             };
 
