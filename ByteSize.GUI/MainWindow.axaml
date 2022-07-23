@@ -2,11 +2,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:material="using:Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="700"
         x:Class="ByteSize.GUI.MainWindow"
         Title="ByteSize">
 	<Grid ColumnDefinitions="*" RowDefinitions="36,*,40,12" Margin="4" VerticalAlignment="Stretch">
-		<TextBox Grid.Row="0" Name="path" FontSize="18">C:\Coding</TextBox>
+		<Grid ColumnDefinitions="44, *" RowDefinitions="*">
+			<Button Grid.Row="0" Grid.Column="0" Name="button_pathselect" Click="button_pathselect_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="1">
+				<material:MaterialIcon Kind="FolderOpen" Foreground="Goldenrod" Width="20" Height="20"></material:MaterialIcon>
+			</Button>
+			<TextBox Grid.Row="0" Grid.Column="1" Name="path" FontSize="18" Margin="1">C:\Coding</TextBox>
+		</Grid>
 		<TreeDataGrid Grid.Row="1" Name="treeDataGridView">
 		</TreeDataGrid>
 		<Grid Grid.Row="2" VerticalAlignment="Bottom" ColumnDefinitions="*,*" RowDefinitions="Auto"  Margin="4">

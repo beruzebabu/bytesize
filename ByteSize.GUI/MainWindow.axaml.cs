@@ -68,5 +68,17 @@ namespace ByteSize.GUI
                 console.Text = $"{ex.Message}";
             }
         }
+
+        private async void button_pathselect_Click(object sender, RoutedEventArgs routedEventArgs)
+        {
+            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
+            openFolderDialog.Title = "Select folder to scan";
+            string? selectedPath = await openFolderDialog.ShowAsync(this);
+
+            if (string.IsNullOrEmpty(selectedPath))
+                return;
+
+            path.Text = selectedPath.Trim();
+        }
     }
 }
