@@ -19,7 +19,6 @@ namespace ByteSize.GUI
         {
             this.ClientSize = new Avalonia.Size(600, 700);
             InitializeComponent();
-            this.UpdateProgressBar += MainWindow_UpdateProgressBar;
 
             HierarchicalTreeDataGridSource = new HierarchicalTreeDataGridSource<IItem>(directoryList)
             {
@@ -27,18 +26,14 @@ namespace ByteSize.GUI
 {
                     new HierarchicalExpanderColumn<IItem>(
                         new TextColumn<IItem, string>("Path", d => d.Name),
-                    d => d.SubItems),
+                        d => d.SubItems,
+                        d => d.SubItems.Count > 0),
                     new TextColumn<IItem, double>("Size", d => sizeCalculation.Calculate(d.Size)),
                     new TextColumn<IItem, string>("", d => sizeCalculation.Suffix),
                 }
             };
 
             treeDataGridView.Source = HierarchicalTreeDataGridSource;
-        }
-
-        private void MainWindow_UpdateProgressBar()
-        {
-            progressbar.Value = progressbar.Value + 5;
         }
 
         private async void button_Click(object sender, RoutedEventArgs routedEventArgs)
@@ -73,7 +68,5 @@ namespace ByteSize.GUI
                 console.Text = $"{ex.Message}";
             }
         }
-
-        public event Action UpdateProgressBar;
     }
 }
