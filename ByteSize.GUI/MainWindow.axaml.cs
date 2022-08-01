@@ -4,6 +4,8 @@ using Avalonia.Interactivity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -32,6 +34,8 @@ namespace ByteSize.GUI
                     new TextColumn<IItem, string>("", d => sizeCalculation.Suffix),
                 }
             };
+
+            HierarchicalTreeDataGridSource.SortBy(HierarchicalTreeDataGridSource.Columns[1], ListSortDirection.Descending);
 
             treeDataGridView.Source = HierarchicalTreeDataGridSource;
         }
@@ -79,6 +83,35 @@ namespace ByteSize.GUI
                 return;
 
             path.Text = selectedPath.Trim();
+        }
+
+        private async void sizeDropDown_SelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        {
+            if (selectionChangedEventArgs.AddedItems.Count < 1)
+                return;
+
+            switch (((ComboBoxItem)selectionChangedEventArgs.AddedItems[0]).Content)
+            {
+                case "MiB":
+                    sizeCalculation = new MegabyteSizeCalculation();
+                    break;
+                case "GiB":
+                    sizeCalculation = new GigabyteSizeCalculation();
+                    break;
+                case "KiB":
+                    sizeCalculation = new KilobyteSizeCalculation();
+                    break;
+                case "B":
+                    sizeCalculation = new ByteSizeCalculation();
+                    break;
+                default:
+                    break;
+            }
+            if (treeDataGridView != null)
+            {
+                ListSortDirection direction = treeDataGridView.Source.Columns[1].SortDirection != null ? treeDataGridView.Source.Columns[1].SortDirection.Value : ListSortDirection.Descending;
+                treeDataGridView.Source.SortBy(treeDataGridView.Source.Columns[1], direction);
+            }
         }
     }
 }

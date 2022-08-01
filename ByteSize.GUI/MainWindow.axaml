@@ -15,9 +15,15 @@
 		</Grid>
 		<TreeDataGrid Grid.Row="1" Name="treeDataGridView">
 		</TreeDataGrid>
-		<Grid Grid.Row="2" VerticalAlignment="Bottom" ColumnDefinitions="*,*" RowDefinitions="Auto"  Margin="4">
+		<Grid Grid.Row="2" VerticalAlignment="Bottom" ColumnDefinitions="*,74,*" RowDefinitions="Auto" Margin="4">
 			<TextBlock Grid.Column="0" Name="console" VerticalAlignment="Center"></TextBlock>
-			<Button Grid.Column="1" Name="button" Click="button_Click" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Scan</Button>
+			<ComboBox Grid.Column="1" Name="sizeDropDown" SelectedIndex="0" Margin="2,0" SelectionChanged="sizeDropDown_SelectionChanged">
+				<ComboBoxItem>MiB</ComboBoxItem>
+				<ComboBoxItem>GiB</ComboBoxItem>
+				<ComboBoxItem>KiB</ComboBoxItem>
+				<ComboBoxItem>B</ComboBoxItem>
+			</ComboBox>
+			<Button Grid.Column="2" Name="button" Click="button_Click" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Scan</Button>
 		</Grid>
 		<ProgressBar Grid.Row="3" Name="progressbar" Height="10" VerticalAlignment="Bottom"></ProgressBar>
 	</Grid>
